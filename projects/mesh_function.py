@@ -4,11 +4,19 @@ import numpy as np
 
 
 def mesh_function(f: Callable[[float], float], t: np.ndarray) -> np.ndarray:
-    raise NotImplementedError
+    fumesh = []
+    for i in t:
+        fumesh.append(func(i))
+    return fumesh
 
 
 def func(t: float) -> float:
-    raise NotImplementedError
+    if 0 <= t <= 3:
+        return np.exp(-t)
+    elif 3 < t <= 4:
+        return np.exp(-3*t)
+    else:
+        raise NotImplementedError("In your array there is a number which is either too large or too small to be within the range of the function")
 
 
 def test_mesh_function():
