@@ -127,8 +127,9 @@ class Poisson:
         return np.sqrt(dx * np.sum((uj - u) ** 2))
 
 
-def test_poisson():
-    assert False
+def test_poisson(sol : Poisson, tol : float, u, ue):
+    assert sol.l2_error(u, ue) < tol
+    return True
 
 
 if __name__ == "__main__":
@@ -143,3 +144,4 @@ if __name__ == "__main__":
     print(f"Boundary conditions: u(0)={bc[0]:2.4f}, u(L)={bc[1]:2.2f}")
     print(f"Discretization: N = {N}")
     print(f"L2-error {sol.l2_error(u, ue)}")
+    print("The result of the test is: ", test_poisson(sol=sol, tol = 1e-25, u = u, ue=ue))
