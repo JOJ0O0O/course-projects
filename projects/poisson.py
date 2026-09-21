@@ -132,6 +132,9 @@ def test_poisson(sol : Poisson, tol : float, u, ue):
     return True
 
 
+test_poisson.__test__ = False
+
+
 if __name__ == "__main__":
     L = 2
     N = 1000

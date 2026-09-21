@@ -159,6 +159,9 @@ def test_poisson2d(sol: Poisson2D, tol:float, u, ue):
     return True
 
 
+test_poisson2d.__test__ = False
+
+
 if __name__ == "__main__":
     L = 2
     N = 1000
