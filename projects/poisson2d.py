@@ -92,8 +92,7 @@ class Poisson2D:
         """
         xij, yij = self.create_mesh(Nx, Ny)
         b = sp.lambdify((x, y), f)(xij, yij)
-        print(b)
-        b = b.ravel()
+        b = np.broadcast_to(b, xij.shape).astype(float, copy=True).ravel()
         B = np.ones((Nx+1, Ny+1), dtype=bool)
         B[1:-1, 1:-1] = 0
         bnds = np.where(B.ravel() == 1)[0]
@@ -154,12 +153,15 @@ class Poisson2D:
         return sparse_linalg.spsolve(A, b.ravel()).reshape((Nx + 1, Ny + 1))
 
 
-def test_poisson2d(sol: Poisson2D, tol:float, u, ue):
-    assert sol.l2_error(u, ue) < tol
-    return True
+def test_poisson2d():
+    Lx = 4
+    Ly = 2
+    N = 20
+    sol = Poisson2D(Lx=Lx, Ly=Ly)
+    ue = x**2 + y**2
+    u = sol(N, N, ue)
 
-
-test_poisson2d.__test__ = False
+    assert sol.l2_error(u, ue) < 1e-10
 
 
 if __name__ == "__main__":
@@ -171,4 +173,4 @@ if __name__ == "__main__":
     print("Manufactured solution: ", ue)
     print(f"Discretization: Nx = {N}, Ny = {N}")
     print(f"L2-error {sol.l2_error(u, ue)}")
-    print("The result of the test is: ", test_poisson2d(sol=sol, tol = 1e-3, u = u, ue=ue))
+    test_poisson2d()
